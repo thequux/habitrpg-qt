@@ -50,6 +50,7 @@ HEADERS += \
 
 CONFIG(debug, debug|release) {
     DEFINES += HRPG_SERVER=habitrpg.thequux.com:3000
+    QMAKE_CXXFLAGS += -pedantic
 }
 CONFIG(release, debug|release) {
     DEFINES += HRPG_SERVER=habitrpg.com

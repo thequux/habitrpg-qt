@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QQmlParserStatus>
+#include <QNetworkAccessManager>
 #include "HrpgAuth.h"
 
 
@@ -20,18 +21,23 @@ public:
     void componentComplete();
     const HrpgAuth &auth() const;
 
+    QNetworkRequest build_request(QString endpoint, HrpgAuth *authinfo);
+    QNetworkRequest build_request(QString endpoint);
+
 signals:
-    void userChanged();
+    void resynced();
+    void login_failed();
 
 public slots:
     void setAuth(HrpgAuth &newValue);
+    void resync();
 
 private:
-    void try_login(HrpgAuth &auth);
-
     HrpgAuth *m_auth;
     bool m_fullyInitialized;
-
+    bool m_auth_valid;
+    QNetworkAccessManager m_netman;
+protected:
 };
 
 #endif // HRPGCLIENT_H
