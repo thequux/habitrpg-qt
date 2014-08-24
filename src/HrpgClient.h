@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QQmlParserStatus>
 #include <QNetworkAccessManager>
+#include "TaskListModel.h"
 #include "HrpgAuth.h"
 
 

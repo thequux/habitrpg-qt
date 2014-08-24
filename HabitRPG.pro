@@ -17,7 +17,9 @@ CONFIG += c++11
 
 SOURCES += src/HabitRPG.cpp \
     src/HrpgClient.cpp \
-    src/HrpgAuth.cpp
+    src/HrpgAuth.cpp \
+    src/TaskListModel.cpp \
+    src/HrpgTask.cpp
 
 PKGDATA = /usr/share/$$TARGET
 pkgdata.path = $$PKGDATA
@@ -46,7 +48,9 @@ TRANSLATIONS += translations/HabitRPG-de.ts
 
 HEADERS += \
     src/HrpgClient.h \
-    src/HrpgAuth.h
+    src/HrpgAuth.h \
+    src/TaskListModel.h \
+    src/HrpgTask.h
 
 CONFIG(debug, debug|release) {
     DEFINES += HRPG_SERVER=habitrpg.thequux.com:3000
