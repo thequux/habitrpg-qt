@@ -29,7 +29,7 @@ public:
     explicit HrpgTask(TaskType type, QObject *parent = 0);
 
 
-    static HrpgTask* fromJSON(const QJsonValue& json);
+    static HrpgTask* fromJSON(QObject *parent, const QJsonValue& json);
 
     TaskType taskType() const { return m_taskType; }
     QString id() const { return m_id; }

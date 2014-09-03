@@ -13,14 +13,14 @@ TaskListModel::TaskListModel(QObject *parent) :
 int TaskListModel::rowCount(const QModelIndex &parent) const
 {
     if (!parent.isValid())
-        return contents.length();
+        return contents.size();
     else
         return 0;
 }
 
 QVariant TaskListModel::data(const QModelIndex &index, int role) const
 {
-    if (index.row() >= contents.length() && role == Qt::DisplayRole) {
+    if (index.row() >= contents.size() && role == Qt::DisplayRole) {
         return QVariant(contents[index.row()]->text());
     } else {
         return QVariant();
@@ -30,7 +30,7 @@ QVariant TaskListModel::data(const QModelIndex &index, int role) const
 void TaskListModel::mergeFrom(QList<QJsonValue*> src) {
 
     // Step 1: compute the longest common subsequence
-    int smax = src.length(), dmax = contents.length();
+    int smax = src.length(), dmax = contents.size();
     // The contents of this array use the bottom two bits to store
     // the direction in the matrix to the previous element.
     // for the item at [s][d],
@@ -74,10 +74,13 @@ void TaskListModel::mergeFrom(QList<QJsonValue*> src) {
         case 1:
             src_it--;
             break;
-        case 2:
-            beginRemoveRows(nullIdx, dst_it-1, dst_it-1);
-            contents.removeAt(dst_it-1); // TODO: leak?
-            endRemoveRows();
+        case 2: {
+                beginRemoveRows(nullIdx, dst_it-1, dst_it-1);
+                HrpgTask* obj = contents[dst_it-1];
+                contents.remove(dst_it-1); // TODO: leak?
+                delete obj;
+                endRemoveRows();
+            }
             dst_it--;
             break;
         case 3:
@@ -99,7 +102,7 @@ void TaskListModel::mergeFrom(QList<QJsonValue*> src) {
 
         if(contents[dst_it]->id() != id) {
             beginInsertRows(nullIdx, dst_it, dst_it);
-            contents.insert(dst_it, HrpgTask::fromJSON(**it));
+            contents.insert(dst_it, HrpgTask::fromJSON(this, **it));
             endInsertRows();
         }
         dst_it++;
